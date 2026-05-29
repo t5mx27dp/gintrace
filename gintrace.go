@@ -13,11 +13,16 @@ type config struct {
 func New(opts ...Option) gin.HandlerFunc {
 	cfg := &config{}
 
-	cfg.traceIDKey = "TraceID"
-	cfg.headerKey = "X-Trace-ID"
-
 	for _, opt := range opts {
 		opt(cfg)
+	}
+
+	if cfg.traceIDKey == "" {
+		cfg.traceIDKey = "TraceID"
+	}
+
+	if cfg.headerKey == "" {
+		cfg.headerKey = "X-Trace-ID"
 	}
 
 	return func(c *gin.Context) {
